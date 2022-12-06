@@ -12,6 +12,7 @@ services:
     volumes:
       - /dev/bus/usb:/dev/bus/usb
       - /run/dbus:/run/dbus
+      - ./drivers:/opt/drivers
     privileged: True
     ports:
       - 8090:8090/tcp

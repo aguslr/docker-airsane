@@ -40,7 +40,7 @@ COPY entrypoint.sh /entrypoint.sh
 
 EXPOSE 8090/tcp
 
-VOLUME /dev/bus/usb /run/dbus
+VOLUME /dev/bus/usb /run/dbus /opt/drivers
 
 HEALTHCHECK --interval=1m --timeout=3s \
   CMD timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8090'

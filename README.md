@@ -13,13 +13,16 @@ Installation
 
 To use *docker-airsane*, follow these steps:
 
-1. Clone and start the container:
+1. Download your scanner drivers in *DEB* format into a directory named
+   `./drivers`.
+
+2. Clone and start the container:
 
        docker run --privileged -p 8090:8090 \
          -v /dev/bus/usb:/dev/bus/usb -v /run/dbus:/run/dbus \
-         ghcr.io/aguslr/docker-airsane:latest
+         -v "${PWD}"/drivers:/opt/drivers ghcr.io/aguslr/docker-airsane:latest
 
-2. Open <http://127.0.0.1:8090> with your web browser to access your scanner.
+3. Open <http://127.0.0.1:8090> with your web browser to access your scanner.
 
 
 Build locally
