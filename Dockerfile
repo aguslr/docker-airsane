@@ -30,5 +30,8 @@ EXPOSE 8090/tcp
 
 VOLUME /dev/bus/usb /run/dbus
 
+HEALTHCHECK --interval=1m --timeout=3s \
+  CMD timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8090'
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["--access-log=-", "--disclose-version=false", "--debug=true"]
