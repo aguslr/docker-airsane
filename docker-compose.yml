@@ -1,0 +1,21 @@
+version: '2.4'
+
+services:
+  airsane:
+    container_name: airsane
+    build:
+      context: .
+      args:
+        BUILD_DATE: "${BUILD_DATE}"
+        BUILD_VERSION: "${BUILD_VERSION}"
+    restart: unless-stopped
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - /run/dbus:/run/dbus
+    privileged: True
+    ports:
+      - 8090:8090/tcp
+    healthcheck:
+      test: timeout 2 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8090'
+      interval: 1m
+      timeout: 3s
