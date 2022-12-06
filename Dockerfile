@@ -33,8 +33,10 @@ RUN \
   apt-get install -y --no-install-recommends sane-utils \
   libsane libjpeg62-turbo libpng16-16 libavahi-client3 libusb-1.0-0 \
   -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/lib/apt/lists/*
+  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/lib/apt/lists/*; \
+  mkdir -p /etc/airsane
 
+COPY --from=builder /opt/AirSane/etc/* /etc/airsane/
 COPY --from=builder /opt/AirSane/build/airsaned /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
 
