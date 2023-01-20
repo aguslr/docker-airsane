@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 
 env:
+  IMAGE_BASE: debian:stable-slim
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -24,7 +25,7 @@ jobs:
         id: check
         uses: lucacome/docker-image-update-checker@v1
         with:
-          base-image: debian:stable-slim
+          base-image: ${{ env.IMAGE_BASE }}
           image: ${{ env.IMAGE_NAME }}
         if: github.event_name == 'schedule'
 
@@ -82,6 +83,8 @@ jobs:
             ghcr.io/${{ env.IMAGE_NAME }}
           flavor: |
             latest=auto
+          labels: |
+            org.opencontainers.image.base.name=docker.io/${{ env.IMAGE_BASE }}
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
