@@ -5,9 +5,6 @@ services:
     container_name: airsane
     build:
       context: .
-      args:
-        BUILD_DATE: "${BUILD_DATE}"
-        BUILD_VERSION: "${BUILD_VERSION}"
     restart: unless-stopped
     volumes:
       - /dev/bus/usb:/dev/bus/usb

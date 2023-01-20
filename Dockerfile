@@ -21,12 +21,6 @@ RUN \
 
 FROM docker.io/debian:stable-slim
 
-ARG BUILD_DATE
-ARG BUILD_VERSION=unspecified
-LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.build-date=${BUILD_DATE}
-LABEL org.label-schema.version=${BUILD_VERSION}
-
 RUN \
   apt-get update && \
   env DEBIAN_FRONTEND=noninteractive \
