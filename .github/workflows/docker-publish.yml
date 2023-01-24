@@ -12,7 +12,11 @@ on:
 
 env:
   IMAGE_BASE: debian:stable-slim
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  GITHUB_USERNAME: ${{ github.repository_owner }}
+  GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
 
@@ -26,7 +30,7 @@ jobs:
         uses: lucacome/docker-image-update-checker@v1
         with:
           base-image: ${{ env.IMAGE_BASE }}
-          image: ${{ env.IMAGE_NAME }}
+          image: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
         if: github.event_name == 'schedule'
 
   build:
@@ -55,23 +59,23 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Log into GitHub Container registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ env.GITHUB_USERNAME }}
+          password: ${{ env.GITHUB_PASSWORD }}
 
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: ${{ env.IMAGE_NAME }}
+          username: ${{ env.GITHUB_USERNAME }}
+          password: ${{ env.GITHUB_PASSWORD }}
+          repository: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
           short-description: ${{ github.event.repository.description }}
 
       - name: Extract Docker metadata
@@ -79,8 +83,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            docker.io/${{ env.IMAGE_NAME }}
-            ghcr.io/${{ env.IMAGE_NAME }}
+            docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+            ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=auto
           labels: |
