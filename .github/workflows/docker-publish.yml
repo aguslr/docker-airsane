@@ -47,13 +47,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Log into Docker Hub registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
@@ -69,14 +62,6 @@ jobs:
           registry: ghcr.io
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ env.GITHUB_PASSWORD }}
-
-      - name: Update repo description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ env.GITHUB_USERNAME }}
-          password: ${{ env.GITHUB_PASSWORD }}
-          repository: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
-          short-description: ${{ github.event.repository.description }}
 
       - name: Extract Docker metadata
         id: meta
@@ -95,6 +80,13 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v3
@@ -104,3 +96,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ env.GITHUB_USERNAME }}
+          password: ${{ env.GITHUB_PASSWORD }}
+          repository: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+          short-description: ${{ github.event.repository.description }}
