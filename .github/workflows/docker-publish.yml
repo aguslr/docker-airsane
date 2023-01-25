@@ -100,7 +100,7 @@ jobs:
       - name: Update repo description
         uses: peter-evans/dockerhub-description@v3
         with:
-          username: ${{ env.GITHUB_USERNAME }}
-          password: ${{ env.GITHUB_PASSWORD }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
           repository: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
           short-description: ${{ github.event.repository.description }}
