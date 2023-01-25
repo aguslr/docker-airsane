@@ -13,8 +13,6 @@ on:
 env:
   IMAGE_BASE: debian:stable-slim
   IMAGE_NAME: ${{ github.event.repository.name }}
-  GITHUB_USERNAME: ${{ github.repository_owner }}
-  GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
@@ -55,21 +53,12 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Log into GitHub Container registry
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ env.GITHUB_USERNAME }}
-          password: ${{ env.GITHUB_PASSWORD }}
-
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
             docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
-            ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           flavor: |
             latest=auto
           labels: |
