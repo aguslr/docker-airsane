@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Check if update available
         id: check
-        uses: lucacome/docker-image-update-checker@v1
+        uses: lucacome/docker-image-update-checker@v1.2.0
         with:
           base-image: ${{ env.IMAGE_BASE }}
           image: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
