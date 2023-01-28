@@ -1,4 +1,6 @@
-FROM docker.io/debian:stable-slim AS builder
+ARG BASE_IMAGE=debian:stable-slim
+
+FROM docker.io/${BASE_IMAGE} AS builder
 
 ARG AIRSANE_REPO=https://github.com/SimulPiscator/AirSane
 ARG AIRSANE_TAG=v0.3.5
@@ -19,7 +21,7 @@ RUN \
   mkdir ./build && cd ./build && cmake .. && make
 
 
-FROM docker.io/debian:stable-slim
+FROM docker.io/${BASE_IMAGE}
 
 RUN \
   apt-get update && \
