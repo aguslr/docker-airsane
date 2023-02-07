@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:stable-slim
+ARG BASE_IMAGE=debian:bullseye-slim
 
 FROM docker.io/${BASE_IMAGE} AS builder
 
