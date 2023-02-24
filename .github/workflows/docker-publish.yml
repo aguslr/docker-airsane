@@ -77,7 +77,7 @@ jobs:
           images: |
             docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
           flavor: |
-            latest=auto
+            latest=false
           labels: |
             org.opencontainers.image.base.name=docker.io/${{ env.IMAGE_BASE }}
           tags: |
