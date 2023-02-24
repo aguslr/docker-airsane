@@ -2,11 +2,16 @@ name: Publish Docker Image
 
 on:
   schedule:
-    - cron: '40 2 * * *'
+    - cron: '40 3 * * *'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '.git*'
+      - 'docker-compose.yml'
   push:
     branches:
       - main
-    tags: [ 'v*.*.*', '*.*.*' ]
     paths-ignore:
       - '.git*'
       - 'docker-compose.yml'
@@ -71,6 +76,7 @@ jobs:
           password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Extract Docker metadata
+        if: github.event_name != 'pull_request'
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -85,6 +91,20 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Extract Docker PR tag
+        if: github.event_name == 'pull_request'
+        id: meta_pr
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            docker.io/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
+          labels: |
+            org.opencontainers.image.base.name=docker.io/${{ env.IMAGE_BASE }}
+          tags: |
+            type=ref,event=pr
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
