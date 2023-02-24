@@ -1,7 +1,7 @@
 [aguslr/docker-airsane][1]
 ==========================
 
-[![publish-docker-image](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml) [![docker-pulls](https://img.shields.io/docker/pulls/aguslr/docker-airsane)](https://hub.docker.com/r/aguslr/docker-airsane) [![image-size](https://img.shields.io/docker/image-size/aguslr/docker-airsane/latest)](https://hub.docker.com/r/aguslr/docker-airsane)
+[![publish-docker-image](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml) [![docker-pulls](https://img.shields.io/docker/pulls/aguslr/airsane)](https://hub.docker.com/r/aguslr/airsane) [![image-size](https://img.shields.io/docker/image-size/aguslr/airsane/latest)](https://hub.docker.com/r/aguslr/airsane)
 
 
 This *Docker* image sets up *AirSane* inside a docker container.
@@ -22,7 +22,7 @@ To use *docker-airsane*, follow these steps:
 
        docker run --privileged -p 8090:8090 \
          -v /dev/bus/usb:/dev/bus/usb -v /run/dbus:/run/dbus \
-         -v "${PWD}"/drivers:/opt/drivers docker.io/aguslr/docker-airsane:latest
+         -v "${PWD}"/drivers:/opt/drivers docker.io/aguslr/airsane:latest
 
 3. Open <http://127.0.0.1:8090> with your web browser to access your scanner.
 

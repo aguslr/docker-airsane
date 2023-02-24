@@ -14,14 +14,26 @@ on:
 
 env:
   IMAGE_BASE: debian:bullseye-slim
-  IMAGE_NAME: ${{ github.event.repository.name }}
+  REPO_NAME: ${{ github.event.repository.name }}
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
 
-  check:
+  variables:
     runs-on: ubuntu-latest
+    outputs:
+      image_name: ${{ steps.split.outputs.image_name }}
+    steps:
+      - name: Set name of image
+        id: split
+        run: echo "image_name=${REPO_NAME#*-}" >> $GITHUB_OUTPUT
+
+  check:
+    needs: variables
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ needs.variables.outputs.image_name }}
     outputs:
       image-needs-updating: ${{ steps.check.outputs.needs-updating }}
     steps:
@@ -35,7 +47,10 @@ jobs:
 
   build:
 
-    needs: check
+    needs: [check, variables]
+
+    env:
+      IMAGE_NAME: ${{ needs.variables.outputs.image_name }}
 
     if: |
       github.event_name != 'schedule' ||
