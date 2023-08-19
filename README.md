@@ -1,7 +1,7 @@
 [aguslr/docker-airsane][1]
 ==========================
 
-[![publish-docker-image](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/aguslr/docker-airsane/actions/workflows/docker-publish.yml) [![docker-pulls](https://img.shields.io/docker/pulls/aguslr/airsane)](https://hub.docker.com/r/aguslr/airsane) [![image-size](https://img.shields.io/docker/image-size/aguslr/airsane/latest)](https://hub.docker.com/r/aguslr/airsane)
+[![docker-pulls](https://img.shields.io/docker/pulls/aguslr/airsane)](https://hub.docker.com/r/aguslr/airsane) [![image-size](https://img.shields.io/docker/image-size/aguslr/airsane/latest)](https://hub.docker.com/r/aguslr/airsane)
 
 
 This *Docker* image sets up *AirSane* inside a docker container.
