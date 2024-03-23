@@ -34,7 +34,7 @@ RUN \
 
 COPY --from=builder /opt/AirSane/etc/* /etc/airsane/
 COPY --from=builder /opt/AirSane/build/airsaned /usr/local/bin
-COPY entrypoint.sh /entrypoint.sh
+COPY rootfs/ /
 
 EXPOSE 8090/tcp
 
