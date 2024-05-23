@@ -41,6 +41,10 @@ jobs:
         if: github.event_name != 'pull_request'
         id: split
         run: echo "image_name=${REPO_NAME#*-}" >> $GITHUB_OUTPUT
+      - name: Set name of image
+        if: github.event_name == 'pull_request'
+        id: split
+        run: echo "image_name=${REPO_NAME}" >> $GITHUB_OUTPUT
 
   check:
     needs: variables
@@ -85,7 +89,6 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
 
       - name: Extract Docker metadata
-        if: github.event_name != 'pull_request'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -97,23 +100,11 @@ jobs:
             org.opencontainers.image.base.name=docker.io/${{ env.IMAGE_BASE }}
           tags: |
             type=sha
-            type=schedule,pattern={{date 'YYYYMMDD'}}
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Extract Docker PR tag
-        if: github.event_name == 'pull_request'
-        id: meta_pr
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ env.REGISTRY_URL }}/${{ env.REGISTRY_USERNAME }}/${{ env.REPO_NAME }}
-          flavor: |
-            latest=false
-          tags: |
-            type=sha
-            type=ref,event=pr
+            type=schedule,pattern={{date 'YYYYMMDD'}},enable=${{ github.event_name != 'pull_request' }}
+            type=semver,pattern={{version}},enable=${{ github.event_name != 'pull_request' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name != 'pull_request' }}
+            type=raw,value=latest,enable={{is_default_branch}},enable=${{ github.event_name != 'pull_request' }}
+            type=ref,event=pr,enable=${{ github.event_name == 'pull_request' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
