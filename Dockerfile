@@ -7,7 +7,7 @@ ARG AIRSANE_TAG=v0.3.5
 
 WORKDIR /opt/AirSane
 
-RUN <<-EOT bash
+RUN <<-EOT sh
 	set -eu
 
 	apt-get update
@@ -26,7 +26,7 @@ EOT
 
 FROM docker.io/${BASE_IMAGE}
 
-RUN <<-EOT bash
+RUN <<-EOT sh
 	set -eu
 
 	apt-get update
