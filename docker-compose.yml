@@ -11,5 +11,4 @@ services:
       - /run/dbus:/run/dbus
       - ./drivers:/opt/drivers
     privileged: True
-    ports:
-      - 8090:8090/tcp
+    network_mode: host
