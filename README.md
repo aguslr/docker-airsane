@@ -20,9 +20,12 @@ To use *docker-airsane*, follow these steps:
 
 2. Clone and start the container:
 
-       docker run --privileged -p 8090:8090 \
-         -v /dev/bus/usb:/dev/bus/usb -v /run/dbus:/run/dbus \
-         -v "${PWD}"/drivers:/opt/drivers docker.io/aguslr/airsane:latest
+       docker run -p 8090:8090 \
+         -v /dev/bus/usb:/dev/bus/usb \
+         -v /run/dbus:/run/dbus \
+         -v "${PWD}"/drivers:/opt/drivers \
+         --device-cgroup-rule='c 189:* rmw' \
+         docker.io/aguslr/airsane:latest
 
 3. Open <http://127.0.0.1:8090> with your web browser to access your scanner.
 
